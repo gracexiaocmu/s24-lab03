@@ -31,6 +31,8 @@ public class IntQueueTest {
 
     private IntQueue mQueue;
     private List<Integer> testList;
+    public static final Integer TEST_NUM = 42;
+    public static final int CAPACITY = 11;
 
     /**
      * Called before each test.
@@ -38,8 +40,8 @@ public class IntQueueTest {
     @Before
     public void setUp() {
         // comment/uncomment these lines to test each class
-        mQueue = new LinkedIntQueue();
-    //    mQueue = new ArrayIntQueue();
+        // mQueue = new LinkedIntQueue();
+        mQueue = new ArrayIntQueue();
 
         testList = new ArrayList<>(List.of(1, 2, 3));
     }
@@ -52,20 +54,21 @@ public class IntQueueTest {
 
     @Test
     public void testNotEmpty() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.enqueue(TEST_NUM);
+        assertFalse(mQueue.isEmpty());
     }
 
     @Test
     public void testPeekEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.clear();
+        assertNull(mQueue.peek());
     }
 
     @Test
     public void testPeekNoEmptyQueue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.clear();
+        mQueue.enqueue(TEST_NUM);
+        assertEquals(mQueue.peek(), TEST_NUM);
     }
 
     @Test
@@ -80,8 +83,25 @@ public class IntQueueTest {
 
     @Test
     public void testDequeue() {
-        // TODO: write your own unit test
-        fail("Test not implemented");
+        mQueue.clear();
+        assertNull(mQueue.dequeue());
+        for (int i = 0; i < testList.size(); i++) {
+            mQueue.enqueue(testList.get(i));
+        }
+        for (int i = 0; i < testList.size(); i++) {
+            assertEquals(mQueue.dequeue(), testList.get(i));
+            assertEquals(mQueue.size(), testList.size() - i - 1);
+        }
+    }
+
+    @Test
+    public void testEnsureCapacity() {
+        mQueue.enqueue(TEST_NUM);
+        mQueue.dequeue();
+        for (int i = 0; i < CAPACITY; i++) {
+            mQueue.enqueue(TEST_NUM);
+        }
+        assertEquals(mQueue.size(), CAPACITY);
     }
 
     @Test
